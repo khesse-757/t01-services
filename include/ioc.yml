@@ -5,6 +5,7 @@
 services:
   # linux IOCs that run in a container #########################################
   linux_ioc: &linux_ioc
+    platform: linux/amd64
     labels:
       # a reference to which repository created this IOC
       ioc_group: "t01"
