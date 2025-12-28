@@ -1,0 +1,25 @@
+services:
+  t01-ea-calc-01:
+    container_name: t01-ea-calc-01
+    extends:
+      service: linux_ioc
+      file: ../../include/ioc.yml
+    image: ghcr.io/epics-containers/ioc-template-example-runtime:3.5.1
+    labels:
+      version: 0.1.0
+    environment:
+      IOCSH_PS1: t01-ea-calc-01 >
+      IOC_NAME: t01-ea-calc-01
+    volumes:
+      - ../../opi/auto-generated/t01-ea-calc-01:/epics/opi
+    configs:
+      - source: t01-ea-calc-01_config
+        target: epics/ioc/config
+
+configs:
+  t01-ea-calc-01_config:
+    file: ./config
+
+include:
+  - path:
+      ../../include/networks.yml

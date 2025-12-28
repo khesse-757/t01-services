@@ -1,0 +1,57 @@
+# Simple calculation records for t01-ea-calc-01
+# Demonstrates: ai, ao, calc, calcout
+
+# Input value (could come from hardware in a real IOC)
+record(ao, "CALC:RAW") {
+    field(DESC, "Raw input value")
+    field(PREC, "3")
+    field(EGU,  "V")
+    field(DRVL, "-10")
+    field(DRVH, "10")
+    field(VAL,  "1.0")
+    field(FLNK, "CALC:SCALED")
+}
+
+# Offset parameter
+record(ao, "CALC:OFFSET") {
+    field(DESC, "Offset for scaling")
+    field(PREC, "3")
+    field(VAL,  "0.0")
+    field(FLNK, "CALC:SCALED")
+}
+
+# Scale factor parameter
+record(ao, "CALC:SCALE") {
+    field(DESC, "Scale factor")
+    field(PREC, "3")
+    field(VAL,  "1.0")
+    field(FLNK, "CALC:SCALED")
+}
+
+# Scaled output: (RAW + OFFSET) * SCALE
+record(calc, "CALC:SCALED") {
+    field(DESC, "Scaled value")
+    field(CALC, "(A+B)*C")
+    field(INPA, "CALC:RAW")
+    field(INPB, "CALC:OFFSET")
+    field(INPC, "CALC:SCALE")
+    field(PREC, "3")
+    field(EGU,  "V")
+    field(PINI, "YES")
+}
+
+# Threshold check - outputs 1 if scaled > threshold
+record(ao, "CALC:THRESHOLD") {
+    field(DESC, "Alarm threshold")
+    field(PREC, "3")
+    field(VAL,  "5.0")
+    field(FLNK, "CALC:ALARM")
+}
+
+record(calc, "CALC:ALARM") {
+    field(DESC, "Over threshold?")
+    field(CALC, "A>B")
+    field(INPA, "CALC:SCALED")
+    field(INPB, "CALC:THRESHOLD")
+    field(PINI, "YES")
+}

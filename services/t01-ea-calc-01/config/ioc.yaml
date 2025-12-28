@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://github.com/epics-containers/ioc-template-example/releases/download/3.5.1/ibek.ioc.schema.json
+
+ioc_name: "{{ _global.get_env('IOC_NAME') }}"
+description: Calculation IOC for t01 beamline
+
+entities:
+  - type: epics.EpicsEnvSet
+    name: EPICS_TZ
+    value: EST5EDT
+
+  - type: devIocStats.iocAdminSoft
+    IOC: "{{ ioc_name | upper }}"
+
+  - type: epics.StartupCommand
+    command: |
+      dbLoadRecords("/epics/ioc/config/ioc.db")
+
+  - type: epics.PostStartupCommand
+    command: |
+      # Set initial values
+      dbpf CALC:OFFSET 0.5
+      dbpf CALC:SCALE 2.0
