@@ -1,0 +1,58 @@
+# Autosave demonstration records
+# These values will persist across IOC restarts
+
+# User-adjustable setpoint (autosave will restore this)
+record(ao, "DEMO:SETPOINT") {
+    field(DESC, "User setpoint")
+    field(VAL, "0")
+    field(EGU, "units")
+    field(DRVH, "100")
+    field(DRVL, "-100")
+    field(PREC, "2")
+    info(autosaveFields, "VAL")
+}
+
+# User-adjustable gain (autosave will restore this)
+record(ao, "DEMO:GAIN") {
+    field(DESC, "Adjustable gain")
+    field(VAL, "1.0")
+    field(PREC, "3")
+    info(autosaveFields, "VAL")
+}
+
+# User-adjustable offset (autosave will restore this)
+record(ao, "DEMO:OFFSET") {
+    field(DESC, "Adjustable offset")
+    field(VAL, "0")
+    field(PREC, "3")
+    info(autosaveFields, "VAL")
+}
+
+# Calculated output: (SETPOINT * GAIN) + OFFSET
+record(calc, "DEMO:OUTPUT") {
+    field(DESC, "Calculated output")
+    field(INPA, "DEMO:SETPOINT CP")
+    field(INPB, "DEMO:GAIN CP")
+    field(INPC, "DEMO:OFFSET CP")
+    field(CALC, "(A*B)+C")
+    field(PREC, "3")
+}
+
+# Counter that increments - demonstrates autosave of running value
+record(calc, "DEMO:COUNTER") {
+    field(DESC, "Persistent counter")
+    field(SCAN, "1 second")
+    field(CALC, "VAL+1")
+    field(VAL, "0")
+    info(autosaveFields, "VAL")
+}
+
+# Mode selector (autosave will restore this)
+record(mbbo, "DEMO:MODE") {
+    field(DESC, "Operating mode")
+    field(ZRST, "Standby")
+    field(ONST, "Running")
+    field(TWST, "Calibrating")
+    field(THST, "Maintenance")
+    info(autosaveFields, "VAL")
+}

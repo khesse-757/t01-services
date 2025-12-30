@@ -1,0 +1,25 @@
+ioc_name: "{{ _global.get_env('IOC_NAME') }}"
+description: IOC demonstrating autosave functionality
+
+entities:
+  - type: epics.EpicsEnvSet
+    name: EPICS_TZ
+    value: EST5EDT
+
+  - type: devIocStats.iocAdminSoft
+    IOC: "{{ ioc_name | upper }}"
+
+  - type: epics.StartupCommand
+    command: |
+      # Add config path for autosave request files
+      set_requestfile_path("/epics/ioc", "config")
+
+  - type: autosave.Autosave
+    P: "DEMO:"
+    path: /autosave
+    positions_req_period: 0
+    settings_req_period: 10
+
+  - type: epics.StartupCommand
+    command: |
+      dbLoadRecords("/epics/ioc/config/ioc.db")
