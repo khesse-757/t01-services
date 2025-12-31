@@ -4,7 +4,7 @@ services:
     extends:
       service: linux_ioc
       file: ../../include/ioc.yml
-    image: ghcr.io/khesse-757/ioc-calc-autosave:0.1.0
+    image: ghcr.io/khesse-757/ioc-calc-autosave-runtime:0.1.0
     labels:
       version: 0.1.0
     environment:
